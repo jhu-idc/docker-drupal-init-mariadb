@@ -10,6 +10,7 @@ jobs:
     timeout-minutes: 10
     outputs:
       image-tag: ${{ steps.output-image-tag.outputs.image-tag }}
+
     steps:
       - name: Checkout
         uses: actions/checkout@v2
