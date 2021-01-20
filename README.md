@@ -1,1 +1,1 @@
-
+Drupal initialization
