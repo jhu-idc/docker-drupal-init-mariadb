@@ -35,6 +35,12 @@ function restore_database_from_file {
     mysql -u root -p${MYSQL_ROOT_PASSWORD} -h ${MYSQL_HOST} -P ${MYSQL_PORT} ${MYSQL_DATABASE} < /var/lib/mysql-files/drupal_default.sql
 }
 
+function check_mysql_connection {
+    mysql -u root -p${MYSQL_ROOT_PASSWORD} -h ${MYSQL_HOST} -P ${MYSQL_PORT} ${MYSQL_DATABASE}
+}
+
+until nslookup mydb.$(cat /var/run/secrets/kubernetes.io/serviceaccount/namespace).svc.cluster.local; do echo waiting for mydb; sleep 2; done
+	
 create_db_if_not_exists
 
 if ! check_table_exists; then
