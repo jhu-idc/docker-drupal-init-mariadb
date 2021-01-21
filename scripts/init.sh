@@ -1,5 +1,7 @@
 #!/bin/sh
 
+DRUPAL_RESTORE_FILE=${DRUPAL_RESTORE_FILE:-drupal_default.sql}
+
 MYSQL_HOST=${MYSQL_HOST:-mariadb}
 MYSQL_PORT=${MYSQL_PORT:-3306}
 MYSQL_ROOT_PASSWORD=${MYSQL_ROOT_PASSWORD}
@@ -32,7 +34,7 @@ function restore_database_from_file {
     if $DEBUG; then
 	echo "Restoring from File"
     fi
-    mysql -u root -p${MYSQL_ROOT_PASSWORD} -h ${MYSQL_HOST} -P ${MYSQL_PORT} ${MYSQL_DATABASE} < /var/lib/mysql-files/drupal_default.sql
+    mysql -u root -p${MYSQL_ROOT_PASSWORD} -h ${MYSQL_HOST} -P ${MYSQL_PORT} ${MYSQL_DATABASE} < /var/lib/mysql-files/${DRUPAL_RESTORE_FILE}
 }
 
 function check_mysql_connection {
