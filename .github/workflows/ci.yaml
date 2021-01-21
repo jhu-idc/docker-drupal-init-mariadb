@@ -20,26 +20,30 @@ jobs:
         id: output-image-tag
         # Set the image tag, same used by the isle-gradle-docker-plugin
         run: echo ::set-output name=image-tag::$(git describe --tags --always --first-parent)
-        
-      - name: Docker Login
-        uses: docker/login-action@v1.8.0
-        if: github.event_name != 'pull_request'
+
+
+     - name: Log in to GHCR
+        id: docker_login
+        uses: docker/login-action@v1
         with:
           registry: ghcr.io
           username: ${{ secrets.REGISTRY_LOGIN }}
           password: ${{ secrets.REGISTRY_PASSWORD }}
 
-      - name: BuildX
+      - name: setup buildx
         uses: docker/setup-buildx-action@v1
-        id: buildx
-        with:
-          install: true
 
-      - name: Build and push Docker images
-        uses: docker/build-push-action@v2.2.2
+      - name: build and push image
+        uses: docker/build-push-action@v2
         with:
-          push: true
+          pull: false
+          context: .
+          file: Dockerfile
+          push: ${{ github.event_name != 'pull_request' }}
           tags: |
-            jhu-idc/drupal/drupal-init-mariadb:latest
-            jhu-idc/drupal/drupal-init-mariadb:${{ steps.output-image-tag.outputs.image-tag}}
-          
+            ghcr.io/jhu-idc/drupal/drupal-mariadb-init:latest
+            ghcr.io/jhu-idc/drupal/drupal-mariadb-init:${{ steps.output-image-tag.outputs.image-tag }}
+          labels: |
+            org.opencontainers.image.source=https://github.com/jhu-idc/drupal_init_mariadb
+            org.opencontainers.image.title=drupal_init_mariadb
+
