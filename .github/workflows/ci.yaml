@@ -40,9 +40,9 @@ jobs:
           file: Dockerfile
           push: ${{ github.event_name != 'pull_request' }}
           tags: |
-            ghcr.io/jhu-idc/drupal/drupal-mariadb-init:latest
-            ghcr.io/jhu-idc/drupal/drupal-mariadb-init:${{ steps.output-image-tag.outputs.image-tag }}
+            ghcr.io/jhu-library-operations/init/mariadb-init:latest
+            ghcr.io/jhu-library-operations/init/mariadb-init:${{ steps.output-image-tag.outputs.image-tag }}
           labels: |
-            org.opencontainers.image.source=https://github.com/jhu-idc/docker-drupal-init-mariadb
-            org.opencontainers.image.title=drupal_init_mariadb
+            org.opencontainers.image.source=https://github.com/jhu-library-operations/oci-mariadb-init
+            org.opencontainers.image.title=mariadb-init
 
