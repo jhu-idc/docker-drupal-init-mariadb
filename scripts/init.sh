@@ -25,6 +25,9 @@ function create_db_if_not_exists {
     fi
 }
 
+function reset_root_password {
+    mysql -u root -p${MYSQL_ROOT_PASSWORD} -h ${MYSQL_HOST} -P ${MYSQL_PORT} -e "set password for 'root'@'%' = PASSWORD('${MYSQL_ROOT_PASSWORD}');"
+}
 
 function check_table_exists {
     mysql -u root -p${MYSQL_ROOT_PASSWORD} -h ${MYSQL_HOST} -P ${MYSQL_PORT} ${MYSQL_DATABASE} -e "select * from users limit 1;" > /dev/null 2>&1
@@ -37,6 +40,7 @@ function restore_database_from_file {
     mysql -u root -p${MYSQL_ROOT_PASSWORD} -h ${MYSQL_HOST} -P ${MYSQL_PORT} ${MYSQL_DATABASE} < /var/lib/mysql-files/${DRUPAL_RESTORE_FILE}
 }
 
+reset_root_password
 create_db_if_not_exists
 
 if ! check_table_exists; then
