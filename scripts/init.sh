@@ -40,8 +40,23 @@ function restore_database_from_file {
     mysql -u root -p${MYSQL_ROOT_PASSWORD} -h ${MYSQL_HOST} -P ${MYSQL_PORT} ${MYSQL_DATABASE} < /var/lib/mysql-files/${DRUPAL_RESTORE_FILE}
 }
 
+function set_default_user_pass {
+    if [ -z ${DRUPAL_DEFAULT_DB_PASSWORD} ]
+    then
+    	if $DEBUG; then
+		echo "Not setting password"
+	fi
+    else
+       if $DEBUG; then
+       		echo "Setting default user password"
+	fi
+	mysql -u root -p${MYSQL_ROOT_PASSWORD} -h ${MYSQL_HOST} -P ${MYSQL_PORT} ${MYSQL_DATABASE} -e "grant ALL PRIVILEGES on ${MYSQL_DATABASE}.* to '${DRUPAL_DEFAULT_DB_NAME}'@'%' identified by PASSWORD('${DRUPAL_DEFAULT_DB_PASSWORD}');"
+    fi;
+}
+
 reset_root_password
 create_db_if_not_exists
+set_default_user_pass
 
 if ! check_table_exists; then
     if $DEBUG; then
