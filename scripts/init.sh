@@ -50,7 +50,7 @@ function set_default_user_pass {
        if $DEBUG; then
        		echo "Setting default user password"
 	fi
-	mysql -u root -p${MYSQL_ROOT_PASSWORD} -h ${MYSQL_HOST} -P ${MYSQL_PORT} ${MYSQL_DATABASE} -e "grant ALL PRIVILEGES on ${MYSQL_DATABASE}.* to '${DRUPAL_DEFAULT_DB_NAME}'@'%' identified by PASSWORD('${DRUPAL_DEFAULT_DB_PASSWORD}');"
+	mysql -u root -p${MYSQL_ROOT_PASSWORD} -h ${MYSQL_HOST} -P ${MYSQL_PORT} ${MYSQL_DATABASE} -e "grant ALL PRIVILEGES on ${MYSQL_DATABASE}.* to '${DRUPAL_DEFAULT_DB_USER}'@'%' identified by PASSWORD('${DRUPAL_DEFAULT_DB_PASSWORD}');"
     fi;
 }
 
